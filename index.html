@@ -98,14 +98,14 @@
         }
 
         .score-ball.goal {
-            opacity: 1;
-            filter: drop-shadow(0 0 10px #4CAF50);
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 15px #4CAF50) !important;
             animation: goalPulse 0.5s ease;
         }
 
         .score-ball.miss {
-            opacity: 1;
-            filter: drop-shadow(0 0 10px #e74c3c);
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 15px #e74c3c) !important;
         }
 
         @keyframes goalPulse {
@@ -297,11 +297,11 @@
                 transform: translateX(-50%) scale(1);
             }
             50% {
-                bottom: 300px;
+                bottom: 280px;
                 transform: translateX(var(--ball-x)) scale(0.7);
             }
             100% {
-                bottom: 220px;
+                bottom: 180px;
                 transform: translateX(var(--ball-x)) scale(0.5);
             }
         }
