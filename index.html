@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="he">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>פנדלים - טום FC ⚽</title>
+    <title>⚽ המשחק של טום ⚽</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -20,152 +19,134 @@
             overflow: hidden;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(180deg, #1a3a1a 0%, #2A5F2A 50%, #1a3a1a 100%);
+            background: linear-gradient(180deg, #1a4d2e 0%, #2d5a3d 100%);
             position: relative;
-            user-select: none;
-            -webkit-user-select: none;
         }
 
-        /* דשא מציאותי */
-        .field-pattern {
+        /* רקע מגרש */
+        .field {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: 
-                repeating-linear-gradient(
-                    0deg,
-                    #2A5F2A 0px,
-                    #2A5F2A 50px,
-                    #245424 50px,
-                    #245424 100px
+                linear-gradient(90deg, transparent 49.5%, rgba(255,255,255,0.15) 49.5%, rgba(255,255,255,0.15) 50.5%, transparent 50.5%),
+                linear-gradient(180deg, transparent 49.5%, rgba(255,255,255,0.15) 49.5%, rgba(255,255,255,0.15) 50.5%, transparent 50.5%),
+                repeating-linear-gradient(90deg, 
+                    rgba(255,255,255,0.03) 0px, 
+                    rgba(255,255,255,0.03) 80px,
+                    rgba(255,255,255,0) 80px,
+                    rgba(255,255,255,0) 160px
                 );
-            opacity: 0.3;
-            z-index: 1;
         }
 
-        /* קווים לבנים */
-        .field-lines {
+        /* אפקט זרקורים */
+        .field::before {
+            content: '';
             position: absolute;
-            width: 100%;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150%;
             height: 100%;
-            z-index: 2;
+            background: radial-gradient(ellipse at center top, rgba(255,255,255,0.08) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .penalty-spot {
-            position: absolute;
-            bottom: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .goal-line {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40%;
-            height: 3px;
-            background: rgba(255,255,255,0.5);
-        }
-
-        /* Header מקצועי */
+        /* Header */
         .header {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 30px;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #0066CC, #0099FF);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 4px 20px rgba(0,102,204,0.5);
-        }
-
-        .logo-text {
-            color: white;
-            font-size: 28px;
-            font-weight: 900;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .score-display {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 20px;
-            padding: 15px 30px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-
-        .score-label {
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .score-value {
-            color: #D4AF37;
-            font-size: 36px;
-            font-weight: 900;
-            text-shadow: 0 2px 10px rgba(212,175,55,0.5);
-            min-width: 60px;
-            text-align: center;
-        }
-
-        /* שער מקצועי */
-        .goal-container {
-            position: absolute;
-            top: 5%;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 50%;
-            max-width: 600px;
-            height: 35%;
-            z-index: 10;
-            perspective: 1000px;
+            background: linear-gradient(135deg, rgba(0,102,204,0.9), rgba(0,153,255,0.9));
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 35px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(255,215,0,0.5),
+                         0 0 10px rgba(255,215,0,0.3);
+        }
+
+        /* Score Board */
+        .score-board {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 15px 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .ball-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #666;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+        }
+
+        .ball-indicator.goal {
+            background: #ffd700;
+            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700;
+            animation: goalPulse 0.5s ease;
+        }
+
+        .ball-indicator.miss {
+            background: #e74c3c;
+            box-shadow: 0 0 20px #e74c3c;
+        }
+
+        @keyframes goalPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Game Container */
+        .game-container {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* שער */
+        .goal-container {
+            position: relative;
+            width: min(600px, 70vw);
+            height: 300px;
+            margin-bottom: 50px;
         }
 
         .goal {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
-            height: 100%;
-            position: relative;
-            transform-style: preserve-3d;
+            height: 80%;
         }
 
+        /* עמודי השער */
         .goal-post {
             position: absolute;
-            background: white;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
         .goal-post.left {
@@ -183,84 +164,59 @@
         }
 
         .goal-post.top {
-            left: 0;
             top: 0;
+            left: 0;
             width: 100%;
             height: 8px;
         }
 
-        .goal-net {
+        /* רשת */
+        .net {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            inset: 8px;
             background: 
-                linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.3) 49%, rgba(255,255,255,0.3) 51%, transparent 52%),
-                linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.3) 49%, rgba(255,255,255,0.3) 51%, transparent 52%);
-            background-size: 40px 40px;
-            opacity: 0.6;
+                repeating-linear-gradient(0deg, transparent, transparent 19px, #ddd 19px, #ddd 20px),
+                repeating-linear-gradient(90deg, transparent, transparent 19px, #ddd 19px, #ddd 20px);
+            opacity: 0.4;
         }
 
-        /* שוער עם תמונת טום */
+        /* שוער */
         .goalkeeper {
             position: absolute;
-            bottom: 42%;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 120px;
-            height: 160px;
-            z-index: 20;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .goalkeeper-body {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .goalkeeper-shirt {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90px;
+            width: 80px;
             height: 100px;
-            background: linear-gradient(135deg, #FF6B00, #FF8C00);
-            border-radius: 15px 15px 5px 5px;
-            box-shadow: 0 4px 20px rgba(255,107,0,0.4);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
         }
 
-        .goalkeeper-gloves {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #FFD700;
-            border-radius: 50%;
-            box-shadow: 0 2px 10px rgba(255,215,0,0.5);
+        .goalkeeper.jumping-left {
+            transform: translateX(-150px) translateY(-30px);
         }
 
-        .goalkeeper-gloves.left {
-            left: -15px;
-            top: 50%;
+        .goalkeeper.jumping-right {
+            transform: translateX(50px) translateY(-30px);
         }
 
-        .goalkeeper-gloves.right {
-            right: -15px;
-            top: 50%;
+        .goalkeeper.jumping-center {
+            transform: translateX(-50%) translateY(-50px);
         }
 
+        /* ראש השוער - תמונת טום */
         .goalkeeper-head {
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 70px;
-            height: 70px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
+            border: 3px solid #ffd700;
+            box-shadow: 0 4px 12px rgba(255,215,0,0.5);
             overflow: hidden;
-            border: 4px solid #FF6B00;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            background: #FFE0BD;
+            background: #fff;
         }
 
         .goalkeeper-head img {
@@ -269,781 +225,688 @@
             object-fit: cover;
         }
 
-        .goalkeeper.jumping-left {
-            animation: jumpLeft 0.6s ease-out;
+        /* גוף השוער */
+        .goalkeeper-body {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 30px;
+            background: #ff9800;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
 
-        .goalkeeper.jumping-right {
-            animation: jumpRight 0.6s ease-out;
+        /* ידיים */
+        .goalkeeper-arm {
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background: #00ff00;
+            border-radius: 5px;
+            top: 50px;
         }
 
-        @keyframes jumpLeft {
-            0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-            50% { transform: translateX(-150%) translateY(-50px) rotate(-45deg); }
-            100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+        .goalkeeper-arm.left {
+            left: -5px;
         }
 
-        @keyframes jumpRight {
-            0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
-            50% { transform: translateX(50%) translateY(-50px) rotate(45deg); }
-            100% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+        .goalkeeper-arm.right {
+            right: -5px;
+        }
+
+        /* רגליים */
+        .goalkeeper-leg {
+            position: absolute;
+            width: 12px;
+            height: 25px;
+            background: #000;
+            border-radius: 3px;
+            bottom: 0;
+        }
+
+        .goalkeeper-leg.left {
+            left: 28%;
+        }
+
+        .goalkeeper-leg.right {
+            right: 28%;
         }
 
         /* כדור */
         .ball {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 
-                0 5px 20px rgba(0,0,0,0.3),
-                inset -5px -5px 10px rgba(0,0,0,0.2),
-                inset 5px 5px 10px rgba(255,255,255,0.5);
-            z-index: 15;
-            transition: all 0.05s linear;
-            bottom: 15%;
+            bottom: 150px;
             left: 50%;
             transform: translateX(-50%);
-        }
-
-        .ball::before {
-            content: '⚽';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 40px;
-        }
-
-        /* מדי בקרה זכוכיתיים */
-        .controls {
-            position: absolute;
-            bottom: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 500px;
-            z-index: 50;
-        }
-
-        .control-panel {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(30px);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            margin-bottom: 15px;
-        }
-
-        .control-label {
-            color: white;
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-align: center;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-
-        .meter-container {
-            position: relative;
-            width: 100%;
-            height: 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .meter-fill {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            background: linear-gradient(90deg, #0066CC, #00AAFF);
-            border-radius: 10px;
-            transition: width 0.05s linear;
-            box-shadow: 0 0 15px rgba(0,102,204,0.8);
-        }
-
-        .meter-indicator {
-            position: absolute;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 20px;
-            background: white;
-            border: 3px solid #0066CC;
+            width: 45px;
+            height: 45px;
+            background: 
+                radial-gradient(circle at 30% 30%, #fff 5%, transparent 5%),
+                conic-gradient(from 0deg, #000 0deg 36deg, #fff 36deg 72deg, #000 72deg 108deg, #fff 108deg 144deg, #000 144deg 180deg, #fff 180deg 216deg, #000 216deg 252deg, #fff 252deg 288deg, #000 288deg 324deg, #fff 324deg 360deg);
             border-radius: 50%;
-            box-shadow: 0 0 15px rgba(0,102,204,0.8);
-            transition: left 0.05s linear;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+            z-index: 5;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* כפתור בעיטה */
-        .kick-button {
-            background: linear-gradient(135deg, #0066CC, #0099FF);
-            color: white;
-            border: none;
-            border-radius: 20px;
-            padding: 20px 50px;
-            font-size: 24px;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 8px 32px rgba(0,102,204,0.5);
-            transition: all 0.3s ease;
-            font-family: 'Heebo', sans-serif;
-            width: 100%;
-            margin-top: 15px;
+        .ball.shooting {
+            animation: ballShoot 0.6s ease-out forwards;
         }
 
-        .kick-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0,102,204,0.7);
-        }
-
-        .kick-button:active {
-            transform: translateY(0);
-        }
-
-        .kick-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* הודעות */
-        .message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(20px);
-            border: 3px solid white;
-            border-radius: 30px;
-            padding: 40px 60px;
-            color: white;
-            font-size: 32px;
-            font-weight: 900;
-            text-align: center;
-            z-index: 200;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .message.show {
-            opacity: 1;
-        }
-
-        .message.goal {
-            border-color: #D4AF37;
-            color: #D4AF37;
-            text-shadow: 0 0 20px rgba(212,175,55,0.8);
-        }
-
-        .message.miss {
-            border-color: #FF4444;
-            color: #FF4444;
-        }
-
-        /* חלקיקים */
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 150;
-        }
-
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #D4AF37;
-            border-radius: 50%;
-            animation: particle-burst 1s ease-out forwards;
-        }
-
-        @keyframes particle-burst {
+        @keyframes ballShoot {
             0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
+                bottom: 150px;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                bottom: 300px;
+                transform: translateX(var(--ball-x)) scale(0.6);
             }
             100% {
-                opacity: 0;
-                transform: translate(var(--x), var(--y)) scale(0);
+                bottom: 200px;
+                transform: translateX(var(--ball-x)) scale(0.4);
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                height: 60px;
-                padding: 0 15px;
-            }
-
-            .logo-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .logo-text {
-                font-size: 20px;
-            }
-
-            .score-display {
-                padding: 10px 20px;
-                gap: 10px;
-            }
-
-            .score-value {
-                font-size: 24px;
-            }
-
-            .goal-container {
-                width: 70%;
-            }
-
-            .goalkeeper {
-                width: 80px;
-                height: 110px;
-            }
-
-            .goalkeeper-head {
-                width: 50px;
-                height: 50px;
-            }
-
-            .goalkeeper-shirt {
-                width: 60px;
-                height: 70px;
-            }
-
-            .message {
-                font-size: 24px;
-                padding: 30px 40px;
-            }
-        }
-
-        /* Loading */
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #0066CC;
+        /* Controls */
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .direction-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-direction {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Heebo', sans-serif;
+            min-width: 100px;
+        }
+
+        .btn-direction:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.6);
+        }
+
+        .btn-direction:active {
+            transform: scale(0.98);
+        }
+
+        .btn-direction.selected {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 25px rgba(240,147,251,0.6);
+            transform: scale(1.1);
+        }
+
+        .btn-shoot {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: 4px solid #fff;
+            border-radius: 20px;
+            padding: 20px 50px;
+            font-size: 32px;
+            font-weight: 900;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(245,87,108,0.5);
+            transition: all 0.3s ease;
+            font-family: 'Heebo', sans-serif;
+            animation: pulse 2s ease infinite;
+        }
+
+        .btn-shoot:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(245,87,108,0.7);
+        }
+
+        .btn-shoot:active {
+            transform: scale(0.95);
+        }
+
+        .btn-shoot:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Result Message */
+        .result-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 80px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 
+                3px 3px 6px rgba(0,0,0,0.8),
+                0 0 30px rgba(255,215,0,0.8),
+                0 0 60px rgba(255,215,0,0.5);
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .result-message.show {
+            animation: messagePopIn 0.5s ease forwards;
+        }
+
+        @keyframes messagePopIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-message.miss {
+            color: #e74c3c;
+            font-size: 60px;
+            text-shadow: 
+                3px 3px 6px rgba(0,0,0,0.8),
+                0 0 30px rgba(231,76,60,0.8);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            z-index: 999;
+            pointer-events: none;
+            animation: confettiFall 2s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Game Over Screen */
+        .game-over-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(15px);
+            display: none;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 2000;
+            opacity: 0;
             transition: opacity 0.5s ease;
         }
 
-        .loading.hidden {
-            opacity: 0;
-            pointer-events: none;
+        .game-over-screen.show {
+            display: flex;
+            opacity: 1;
         }
 
-        .loading-ball {
-            width: 80px;
-            height: 80px;
-            font-size: 60px;
-            animation: bounce 0.6s infinite alternate;
+        .game-over-screen h1 {
+            font-size: 64px;
+            color: #fff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
         }
 
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-40px); }
+        .game-over-screen h2 {
+            font-size: 42px;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px rgba(255,215,0,0.5);
+        }
+
+        .game-over-screen p {
+            font-size: 36px;
+            margin-bottom: 40px;
+            font-weight: bold;
+        }
+
+        .perfect {
+            color: #ffd700;
+            text-shadow: 0 0 30px #ffd700;
+            animation: perfectGlow 2s ease infinite;
+        }
+
+        .good {
+            color: #3498db;
+            text-shadow: 0 0 30px #3498db;
+        }
+
+        .try-again {
+            color: #e74c3c;
+            text-shadow: 0 0 30px #e74c3c;
+        }
+
+        @keyframes perfectGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .play-again-btn {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border: 4px solid #fff;
+            font-size: 36px;
+            padding: 25px 60px;
+            border-radius: 25px;
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(67,233,123,0.5);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+            font-family: 'Heebo', sans-serif;
+        }
+
+        .play-again-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(67,233,123,0.7);
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .btn-direction {
+                padding: 12px 20px;
+                font-size: 18px;
+                min-width: 80px;
+            }
+
+            .btn-shoot {
+                padding: 18px 40px;
+                font-size: 28px;
+            }
+
+            .result-message {
+                font-size: 60px;
+            }
+
+            .result-message.miss {
+                font-size: 48px;
+            }
+
+            .game-over-screen h1 {
+                font-size: 48px;
+            }
+
+            .game-over-screen h2 {
+                font-size: 32px;
+            }
+
+            .game-over-screen p {
+                font-size: 28px;
+            }
+
+            .play-again-btn {
+                font-size: 28px;
+                padding: 20px 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .goal-container {
+                width: 85vw;
+                height: 250px;
+            }
+
+            .direction-buttons {
+                gap: 10px;
+            }
+
+            .btn-direction {
+                padding: 10px 15px;
+                font-size: 16px;
+                min-width: 70px;
+            }
+
+            .controls {
+                bottom: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loading">
-        <div class="loading-ball">⚽</div>
-    </div>
+    <div class="field"></div>
 
-    <!-- דשא -->
-    <div class="field-pattern"></div>
-    <div class="field-lines">
-        <div class="penalty-spot"></div>
-        <div class="goal-line"></div>
-    </div>
-
-    <!-- Header -->
     <div class="header">
-        <div class="logo">
-            <div class="logo-icon">⚽</div>
-            <div class="logo-text">טום FC</div>
-        </div>
-        <div class="score-display">
-            <div>
-                <div class="score-label">גולים</div>
-                <div class="score-value" id="goals">0</div>
-            </div>
-            <div style="width: 2px; height: 40px; background: rgba(255,255,255,0.3);"></div>
-            <div>
-                <div class="score-label">ניסיונות</div>
-                <div class="score-value" id="attempts">5</div>
-            </div>
-        </div>
+        <h1>⚽ המשחק של טום ⚽</h1>
     </div>
 
-    <!-- שער -->
-    <div class="goal-container">
-        <div class="goal">
-            <div class="goal-net"></div>
-            <div class="goal-post left"></div>
-            <div class="goal-post right"></div>
-            <div class="goal-post top"></div>
-        </div>
+    <div class="score-board" id="scoreBoard">
+        <div class="ball-indicator"></div>
+        <div class="ball-indicator"></div>
+        <div class="ball-indicator"></div>
+        <div class="ball-indicator"></div>
+        <div class="ball-indicator"></div>
     </div>
 
-    <!-- שוער -->
-    <div class="goalkeeper" id="goalkeeper">
-        <div class="goalkeeper-body">
-            <div class="goalkeeper-head">
-                <img src="tom-photo.jpg" alt="טום">
+    <div class="game-container">
+        <div class="goal-container">
+            <div class="goal">
+                <div class="goal-post left"></div>
+                <div class="goal-post right"></div>
+                <div class="goal-post top"></div>
+                <div class="net"></div>
             </div>
-            <div class="goalkeeper-shirt"></div>
-            <div class="goalkeeper-gloves left"></div>
-            <div class="goalkeeper-gloves right"></div>
+
+            <div class="goalkeeper" id="goalkeeper">
+                <div class="goalkeeper-head">
+                    <img src="tom-photo.jpg" alt="Tom">
+                </div>
+                <div class="goalkeeper-body"></div>
+                <div class="goalkeeper-arm left"></div>
+                <div class="goalkeeper-arm right"></div>
+                <div class="goalkeeper-leg left"></div>
+                <div class="goalkeeper-leg right"></div>
+            </div>
         </div>
+
+        <div class="ball" id="ball"></div>
     </div>
 
-    <!-- כדור -->
-    <div class="ball" id="ball"></div>
-
-    <!-- בקרות -->
-    <div class="controls" id="controls">
-        <div class="control-panel" id="directionPanel" style="display: none;">
-            <div class="control-label">כיוון אופקי</div>
-            <div class="meter-container">
-                <div class="meter-fill" id="directionFill"></div>
-                <div class="meter-indicator" id="directionIndicator"></div>
-            </div>
+    <div class="controls">
+        <div class="direction-buttons">
+            <button class="btn-direction" data-direction="left">⬅️ שמאל</button>
+            <button class="btn-direction" data-direction="center">⬆️ מרכז</button>
+            <button class="btn-direction" data-direction="right">➡️ ימין</button>
         </div>
-        <div class="control-panel" id="powerPanel" style="display: none;">
-            <div class="control-label">עוצמה</div>
-            <div class="meter-container">
-                <div class="meter-fill" id="powerFill"></div>
-                <div class="meter-indicator" id="powerIndicator"></div>
-            </div>
-        </div>
-        <button class="kick-button" id="kickButton">בעיטה! 🎯</button>
+        <button class="btn-shoot" id="shootBtn">⚽ בעט! ⚽</button>
     </div>
 
-    <!-- הודעות -->
-    <div class="message" id="message"></div>
+    <div class="result-message" id="resultMessage"></div>
 
-    <!-- חלקיקים -->
-    <div class="particles" id="particles"></div>
+    <div class="game-over-screen" id="gameOverScreen">
+        <h1>סיימת!</h1>
+        <h2 id="finalScore"></h2>
+        <p id="finalMessage"></p>
+        <button class="play-again-btn" id="playAgainBtn">🔄 שחק שוב 🔄</button>
+    </div>
 
     <script>
-        // Game State
-        const game = {
-            goals: 0,
-            attempts: 5,
-            phase: 'ready', // ready, direction, power, kicking
-            direction: 0.5, // 0-1 (left to right)
-            power: 0.5, // 0-1
-            directionSpeed: 0.02,
-            powerSpeed: 0.03,
-            directionDirection: 1,
-            powerDirection: 1,
-            animationFrame: null
-        };
-
-        // Elements
-        const elements = {
-            ball: document.getElementById('ball'),
-            goalkeeper: document.getElementById('goalkeeper'),
-            kickButton: document.getElementById('kickButton'),
-            directionPanel: document.getElementById('directionPanel'),
-            powerPanel: document.getElementById('powerPanel'),
-            directionFill: document.getElementById('directionFill'),
-            powerFill: document.getElementById('powerFill'),
-            directionIndicator: document.getElementById('directionIndicator'),
-            powerIndicator: document.getElementById('powerIndicator'),
-            message: document.getElementById('message'),
-            particles: document.getElementById('particles'),
-            goals: document.getElementById('goals'),
-            attempts: document.getElementById('attempts'),
-            loading: document.getElementById('loading'),
-            controls: document.getElementById('controls')
-        };
-
-        // Initialize
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                elements.loading.classList.add('hidden');
-            }, 500);
-        });
-
-        // Sound Effects (Web Audio API)
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playSound(frequency, duration, type = 'sine') {
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = type;
-            
-            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-            
-            oscillator.start(audioCtx.currentTime);
-            oscillator.stop(audioCtx.currentTime + duration);
-        }
-
-        function playKickSound() {
-            playSound(150, 0.1, 'square');
-        }
+        // Audio Context for sounds
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         function playGoalSound() {
-            playSound(800, 0.3, 'sine');
-            setTimeout(() => playSound(1000, 0.3, 'sine'), 150);
-            setTimeout(() => playSound(1200, 0.5, 'sine'), 300);
+            const times = [0, 0.1, 0.2];
+            times.forEach(time => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800 + (time * 400);
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime + time);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + time + 0.5);
+                
+                oscillator.start(audioContext.currentTime + time);
+                oscillator.stop(audioContext.currentTime + time + 0.5);
+            });
         }
 
         function playMissSound() {
-            playSound(200, 0.5, 'sawtooth');
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 200;
+            oscillator.type = 'sawtooth';
+            
+            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.3);
         }
 
-        // Direction Meter Animation
-        function animateDirection() {
-            game.direction += game.directionSpeed * game.directionDirection;
-            
-            if (game.direction >= 1) {
-                game.direction = 1;
-                game.directionDirection = -1;
-            } else if (game.direction <= 0) {
-                game.direction = 0;
-                game.directionDirection = 1;
-            }
-            
-            updateDirectionMeter();
-            
-            if (game.phase === 'direction') {
-                game.animationFrame = requestAnimationFrame(animateDirection);
-            }
-        }
+        // Game State
+        let selectedDirection = null;
+        let currentKick = 0;
+        let score = 0;
+        let isKicking = false;
 
-        function updateDirectionMeter() {
-            const percent = game.direction * 100;
-            elements.directionFill.style.width = percent + '%';
-            elements.directionIndicator.style.left = percent + '%';
-        }
+        const directionButtons = document.querySelectorAll('.btn-direction');
+        const shootBtn = document.getElementById('shootBtn');
+        const ball = document.getElementById('ball');
+        const goalkeeper = document.getElementById('goalkeeper');
+        const resultMessage = document.getElementById('resultMessage');
+        const scoreBoard = document.getElementById('scoreBoard');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const playAgainBtn = document.getElementById('playAgainBtn');
 
-        // Power Meter Animation
-        function animatePower() {
-            game.power += game.powerSpeed * game.powerDirection;
-            
-            if (game.power >= 1) {
-                game.power = 1;
-                game.powerDirection = -1;
-            } else if (game.power <= 0) {
-                game.power = 0;
-                game.powerDirection = 1;
-            }
-            
-            updatePowerMeter();
-            
-            if (game.phase === 'power') {
-                game.animationFrame = requestAnimationFrame(animatePower);
-            }
-        }
-
-        function updatePowerMeter() {
-            const percent = game.power * 100;
-            elements.powerFill.style.width = percent + '%';
-            elements.powerIndicator.style.left = percent + '%';
-        }
-
-        // Kick Button Handler
-        elements.kickButton.addEventListener('click', handleKick);
-        elements.kickButton.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            handleKick();
+        // Direction Selection
+        directionButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                directionButtons.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedDirection = btn.dataset.direction;
+            });
         });
 
-        function handleKick() {
-            if (game.phase === 'ready') {
-                // Start direction phase
-                game.phase = 'direction';
-                elements.kickButton.textContent = 'קבע כיוון! ⬅️➡️';
-                elements.directionPanel.style.display = 'block';
-                animateDirection();
-                playSound(600, 0.1);
-                
-            } else if (game.phase === 'direction') {
-                // Lock direction, start power phase
-                cancelAnimationFrame(game.animationFrame);
-                game.phase = 'power';
-                elements.kickButton.textContent = 'עוצמה! 💪';
-                elements.powerPanel.style.display = 'block';
-                animatePower();
-                playSound(700, 0.1);
-                
-            } else if (game.phase === 'power') {
-                // Lock power, execute kick
-                cancelAnimationFrame(game.animationFrame);
-                game.phase = 'kicking';
-                elements.kickButton.disabled = true;
-                executeKick();
-            }
-        }
+        // Shoot
+        shootBtn.addEventListener('click', shoot);
 
-        // Execute Kick
-        function executeKick() {
-            playKickSound();
+        function shoot() {
+            if (!selectedDirection || isKicking) return;
             
-            // Hide controls during kick
-            elements.controls.style.opacity = '0';
-            
-            // Calculate target position
-            const goalWidth = elements.goalkeeper.parentElement.offsetWidth;
-            const targetX = (game.direction - 0.5) * goalWidth;
-            
-            // Goalkeeper decision (random with bias toward ball direction)
-            const keeperChoice = Math.random();
-            let keeperDirection = 'none';
-            
-            if (game.direction < 0.35) {
-                keeperDirection = keeperChoice > 0.3 ? 'left' : 'right';
-            } else if (game.direction > 0.65) {
-                keeperDirection = keeperChoice > 0.3 ? 'right' : 'left';
-            } else {
-                keeperDirection = keeperChoice > 0.5 ? 'left' : 'right';
-            }
-            
-            // Animate goalkeeper
-            if (keeperDirection !== 'none') {
-                setTimeout(() => {
-                    elements.goalkeeper.classList.add('jumping-' + keeperDirection);
-                    playSound(400, 0.2);
-                }, 300);
-                
-                setTimeout(() => {
-                    elements.goalkeeper.classList.remove('jumping-' + keeperDirection);
-                }, 900);
-            }
-            
-            // Animate ball
-            animateBall(targetX, keeperDirection);
-        }
+            isKicking = true;
+            shootBtn.disabled = true;
 
-        function animateBall(targetX, keeperDirection) {
-            const startBottom = 15;
-            const startLeft = 50;
-            const duration = 800;
-            const startTime = Date.now();
-            
-            function animate() {
-                const elapsed = Date.now() - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // Easing function (ease-out)
-                const eased = 1 - Math.pow(1 - progress, 3);
-                
-                // Calculate position
-                const currentLeft = startLeft + (targetX / window.innerWidth * 100) * eased;
-                const currentBottom = startBottom + (30 * Math.sin(progress * Math.PI));
-                
-                elements.ball.style.left = currentLeft + '%';
-                elements.ball.style.bottom = currentBottom + '%';
-                
-                // Scale ball (perspective)
-                const scale = 1 - (progress * 0.5);
-                elements.ball.style.transform = `translateX(-50%) scale(${scale})`;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    checkGoal(targetX, keeperDirection);
-                }
-            }
-            
-            animate();
-        }
+            // Goalkeeper jumps
+            const goalkeeperDirection = ['left', 'center', 'right'][Math.floor(Math.random() * 3)];
+            goalkeeper.classList.add(`jumping-${goalkeeperDirection}`);
 
-        function checkGoal(targetX, keeperDirection) {
-            const direction = game.direction;
-            const power = game.power;
+            // Ball shoots
+            const ballXPositions = {
+                'left': '-180px',
+                'center': '-50%',
+                'right': '120px'
+            };
             
-            // Goal logic
-            let isGoal = false;
-            
-            if (keeperDirection === 'left') {
-                isGoal = direction > 0.55 && power > 0.3;
-            } else if (keeperDirection === 'right') {
-                isGoal = direction < 0.45 && power > 0.3;
-            } else {
-                isGoal = power > 0.6;
-            }
-            
-            // Update game state
-            game.attempts--;
-            if (isGoal) {
-                game.goals++;
-                showGoal();
-            } else {
-                showMiss();
-            }
-            
-            // Update UI
-            elements.goals.textContent = game.goals;
-            elements.attempts.textContent = game.attempts;
-            
-            // Check game over
+            ball.style.setProperty('--ball-x', ballXPositions[selectedDirection]);
+            ball.classList.add('shooting');
+
             setTimeout(() => {
-                if (game.attempts === 0) {
-                    endGame();
-                } else {
+                const isGoal = selectedDirection !== goalkeeperDirection;
+                showResult(isGoal);
+                updateScore(isGoal);
+
+                setTimeout(() => {
                     resetKick();
-                }
-            }, 2000);
+                    currentKick++;
+
+                    if (currentKick >= 5) {
+                        showGameOver();
+                    }
+                }, 2000);
+            }, 600);
         }
 
-        function showGoal() {
-            playGoalSound();
-            elements.message.textContent = '🎉 גוווווול! 🎉';
-            elements.message.classList.add('goal', 'show');
-            
-            // Particles
-            createParticles();
-            
+        function showResult(isGoal) {
+            resultMessage.textContent = isGoal ? '🎉 גול! 🎉' : '😢 כמעט!';
+            resultMessage.className = 'result-message show';
+            if (!isGoal) resultMessage.classList.add('miss');
+
+            if (isGoal) {
+                playGoalSound();
+                createConfetti();
+            } else {
+                playMissSound();
+                document.body.style.animation = 'shake 0.3s';
+                setTimeout(() => document.body.style.animation = '', 300);
+            }
+
             setTimeout(() => {
-                elements.message.classList.remove('show');
-                setTimeout(() => {
-                    elements.message.classList.remove('goal');
-                }, 300);
+                resultMessage.classList.remove('show');
+                setTimeout(() => resultMessage.className = 'result-message', 300);
             }, 1500);
         }
 
-        function showMiss() {
-            playMissSound();
-            elements.message.textContent = '😅 פספסת!';
-            elements.message.classList.add('miss', 'show');
+        function updateScore(isGoal) {
+            if (isGoal) score++;
             
-            setTimeout(() => {
-                elements.message.classList.remove('show');
-                setTimeout(() => {
-                    elements.message.classList.remove('miss');
-                }, 300);
-            }, 1500);
+            const indicators = scoreBoard.querySelectorAll('.ball-indicator');
+            indicators[currentKick].classList.add(isGoal ? 'goal' : 'miss');
         }
 
-        function createParticles() {
-            const colors = ['#D4AF37', '#FFD700', '#0066CC', '#00AAFF'];
+        function createConfetti() {
+            const colors = ['#ffd700', '#3498db', '#e74c3c', '#2ecc71', '#9b59b6', '#f39c12'];
             
             for (let i = 0; i < 30; i++) {
                 setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = '50%';
-                    particle.style.top = '30%';
-                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
                     
-                    const angle = Math.random() * Math.PI * 2;
-                    const distance = 100 + Math.random() * 200;
-                    const x = Math.cos(angle) * distance;
-                    const y = Math.sin(angle) * distance;
+                    document.body.appendChild(confetti);
                     
-                    particle.style.setProperty('--x', x + 'px');
-                    particle.style.setProperty('--y', y + 'px');
-                    
-                    elements.particles.appendChild(particle);
-                    
-                    setTimeout(() => {
-                        particle.remove();
-                    }, 1000);
+                    setTimeout(() => confetti.remove(), 2500);
                 }, i * 30);
             }
         }
 
         function resetKick() {
-            // Reset ball position
-            elements.ball.style.left = '50%';
-            elements.ball.style.bottom = '15%';
-            elements.ball.style.transform = 'translateX(-50%) scale(1)';
+            ball.classList.remove('shooting');
+            goalkeeper.className = 'goalkeeper';
+            directionButtons.forEach(b => b.classList.remove('selected'));
+            selectedDirection = null;
+            isKicking = false;
+            shootBtn.disabled = false;
+        }
+
+        function showGameOver() {
+            const finalScore = document.getElementById('finalScore');
+            const finalMessage = document.getElementById('finalMessage');
             
-            // Reset game state
-            game.phase = 'ready';
-            game.direction = 0.5;
-            game.power = 0.5;
-            game.directionDirection = 1;
-            game.powerDirection = 1;
+            finalScore.textContent = `כבשת ${score} גולים מתוך 5! 🎯`;
+            
+            if (score === 5) {
+                finalMessage.textContent = '🏆 מושלם! אתה אלוף! 🏆';
+                finalMessage.className = 'perfect';
+            } else if (score >= 3) {
+                finalMessage.textContent = '⚡ מעולה! כמעט מושלם! ⚡';
+                finalMessage.className = 'good';
+            } else {
+                finalMessage.textContent = '💪 אל תוותר! נסה שוב! 💪';
+                finalMessage.className = 'try-again';
+            }
+
+            setTimeout(() => {
+                gameOverScreen.classList.add('show');
+            }, 500);
+        }
+
+        playAgainBtn.addEventListener('click', () => {
+            // Reset game
+            currentKick = 0;
+            score = 0;
+            isKicking = false;
+            selectedDirection = null;
             
             // Reset UI
-            elements.kickButton.disabled = false;
-            elements.kickButton.textContent = 'בעיטה! 🎯';
-            elements.directionPanel.style.display = 'none';
-            elements.powerPanel.style.display = 'none';
-            elements.controls.style.opacity = '1';
+            gameOverScreen.classList.remove('show');
+            const indicators = scoreBoard.querySelectorAll('.ball-indicator');
+            indicators.forEach(ind => {
+                ind.classList.remove('goal', 'miss');
+            });
             
-            updateDirectionMeter();
-            updatePowerMeter();
-        }
-
-        function endGame() {
-            const percentage = (game.goals / 5 * 100).toFixed(0);
-            let title, emoji;
-            
-            if (game.goals === 5) {
-                title = 'מושלם! 🏆';
-                emoji = '👑';
-            } else if (game.goals >= 3) {
-                title = 'מעולה! ⚽';
-                emoji = '🌟';
-            } else {
-                title = 'נסה שוב! 💪';
-                emoji = '🎯';
-            }
-            
-            elements.message.innerHTML = `
-                <div style="font-size: 48px; margin-bottom: 20px;">${emoji}</div>
-                <div>${title}</div>
-                <div style="font-size: 24px; margin-top: 20px; opacity: 0.8;">
-                    ${game.goals} גולים מתוך 5 (${percentage}%)
-                </div>
-                <div style="font-size: 18px; margin-top: 30px; opacity: 0.6; cursor: pointer;" onclick="location.reload()">
-                    לחץ כדי לשחק שוב
-                </div>
-            `;
-            elements.message.classList.add('goal', 'show');
-            
-            playGoalSound();
-        }
-
-        // Mobile support
-        let touchStartTime = 0;
-        document.addEventListener('touchstart', () => {
-            touchStartTime = Date.now();
+            resetKick();
         });
 
-        // Prevent context menu on long press
-        document.addEventListener('contextmenu', (e) => {
-            if (Date.now() - touchStartTime < 500) {
+        // Touch support for mobile
+        let touchStartX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            
+            // Swipe detection for direction (optional enhancement)
+            if (Math.abs(diff) > 50) {
+                // Swipe detected, but we keep the button interface for simplicity
+            }
+        });
+
+        // Prevent double-tap zoom on mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
                 e.preventDefault();
             }
-        });
+            lastTouchEnd = now;
+        }, false);
 
-        // Screen orientation
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {
-                // Ignore error if lock not supported
-            });
-        }
+        // Keyboard support (optional - for desktop testing)
+        document.addEventListener('keydown', (e) => {
+            if (isKicking || currentKick >= 5) return;
+            
+            if (e.key === 'ArrowLeft' || e.key === '1') {
+                directionButtons[0].click();
+            } else if (e.key === 'ArrowUp' || e.key === '2') {
+                directionButtons[1].click();
+            } else if (e.key === 'ArrowRight' || e.key === '3') {
+                directionButtons[2].click();
+            } else if (e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                shootBtn.click();
+            }
+        });
     </script>
 </body>
 </html>
