@@ -76,8 +76,9 @@
         /* Score Board */
         .score-board {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
             background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255,255,255,0.2);
@@ -649,9 +650,9 @@
 
     <div class="controls">
         <div class="direction-buttons">
-            <button class="btn-direction" data-direction="left">⬅️ שמאל</button>
-            <button class="btn-direction" data-direction="center">⬆️ מרכז</button>
             <button class="btn-direction" data-direction="right">➡️ ימין</button>
+            <button class="btn-direction" data-direction="center">⬆️ מרכז</button>
+            <button class="btn-direction" data-direction="left">⬅️ שמאל</button>
         </div>
         <button class="btn-shoot" id="shootBtn">⚽ בעט! ⚽</button>
     </div>
