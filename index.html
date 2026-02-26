@@ -97,15 +97,27 @@
             transition: all 0.3s ease;
         }
 
+        .score-ball::before {
+            content: "⚽";
+        }
+
         .score-ball.goal {
             opacity: 1 !important;
             filter: drop-shadow(0 0 15px #4CAF50) !important;
             animation: goalPulse 0.5s ease;
         }
 
+        .score-ball.goal::before {
+            content: "⚽";
+        }
+
         .score-ball.miss {
             opacity: 1 !important;
             filter: drop-shadow(0 0 15px #e74c3c) !important;
+        }
+
+        .score-ball.miss::before {
+            content: "⚽";
         }
 
         @keyframes goalPulse {
@@ -297,11 +309,11 @@
                 transform: translateX(-50%) scale(1);
             }
             50% {
-                bottom: 280px;
+                bottom: 240px;
                 transform: translateX(var(--ball-x)) scale(0.7);
             }
             100% {
-                bottom: 180px;
+                bottom: 150px;
                 transform: translateX(var(--ball-x)) scale(0.5);
             }
         }
@@ -612,11 +624,11 @@
     </div>
 
     <div class="score-board" id="scoreBoard">
-        <div class="score-ball" data-index="0">⚽</div>
-        <div class="score-ball" data-index="1">⚽</div>
-        <div class="score-ball" data-index="2">⚽</div>
-        <div class="score-ball" data-index="3">⚽</div>
-        <div class="score-ball" data-index="4">⚽</div>
+        <div class="score-ball" data-index="0"></div>
+        <div class="score-ball" data-index="1"></div>
+        <div class="score-ball" data-index="2"></div>
+        <div class="score-ball" data-index="3"></div>
+        <div class="score-ball" data-index="4"></div>
     </div>
 
     <div class="game-container">
