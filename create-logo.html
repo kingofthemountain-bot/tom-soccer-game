@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Create Logo</title>
+</head>
+<body style="background: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+    <canvas id="canvas" width="800" height="300"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Clear with transparent background
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Text
+        const text = "המשחק של תום";
+        ctx.font = 'bold 90px Arial Black, Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        
+        // Multiple shadow layers for 3D depth
+        for (let i = 10; i > 0; i--) {
+            ctx.fillStyle = `rgba(0, 0, 0, ${0.3 - i * 0.02})`;
+            ctx.fillText(text, x + i, y + i);
+        }
+        
+        // Thick outline - cyan/turquoise
+        ctx.strokeStyle = '#4ecdc4';
+        ctx.lineWidth = 12;
+        ctx.strokeText(text, x, y);
+        
+        // Second outline - orange
+        ctx.strokeStyle = '#ff6b35';
+        ctx.lineWidth = 8;
+        ctx.strokeText(text, x, y);
+        
+        // Main text - yellow
+        ctx.fillStyle = '#ffeb3b';
+        ctx.fillText(text, x, y);
+        
+        // Add some shine effect on top
+        const gradient = ctx.createLinearGradient(x - 200, y - 50, x + 200, y + 50);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3)');
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.6)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0.3)');
+        ctx.fillStyle = gradient;
+        ctx.fillText(text, x, y);
+        
+        // Download button
+        setTimeout(() => {
+            const link = document.createElement('a');
+            link.download = 'logo.png';
+            link.href = canvas.toDataURL();
+            link.textContent = 'Download Logo';
+            link.style.cssText = 'position: fixed; top: 20px; left: 20px; background: #4ecdc4; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-family: Arial; font-weight: bold; font-size: 18px;';
+            document.body.appendChild(link);
+            
+            // Auto-download
+            link.click();
+        }, 500);
+    </script>
+</body>
+</html>

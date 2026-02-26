@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>טום - משחק הפנדלים</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        
+        body {
+            background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F0E17 100%);
+            font-family: 'Lilita One', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* כוכבים */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 10% 20%, white, transparent),
+                radial-gradient(2px 2px at 80% 60%, white, transparent),
+                radial-gradient(1px 1px at 30% 70%, white, transparent),
+                radial-gradient(2px 2px at 90% 30%, white, transparent),
+                radial-gradient(1px 1px at 50% 80%, white, transparent),
+                radial-gradient(2px 2px at 20% 10%, white, transparent),
+                radial-gradient(1px 1px at 70% 40%, white, transparent),
+                radial-gradient(2px 2px at 40% 90%, white, transparent),
+                radial-gradient(1px 1px at 85% 15%, white, transparent),
+                radial-gradient(2px 2px at 15% 50%, white, transparent);
+            opacity: 0.8;
+            pointer-events: none;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.4; }
+        }
+        
+        #gameContainer {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #2ecc71;
+            text-shadow: 
+                -3px -3px 0 #000, 3px -3px 0 #000,
+                -3px 3px 0 #000, 3px 3px 0 #000,
+                0 0 30px rgba(46,204,113,0.8);
+            letter-spacing: 3px;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+                overflow: hidden;
+            }
+            
+            #gameContainer {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+                justify-content: space-between;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                margin: 5px 0;
+                letter-spacing: 1px;
+            }
+            
+            canvas {
+                width: 95vw !important;
+                height: 50vh !important;
+                margin: 5px auto;
+            }
+            
+            #controls {
+                margin: 5px 0;
+                gap: 8px;
+            }
+            
+            #controls button {
+                font-size: 1.8rem;
+                padding: 10px 15px;
+                min-width: 55px;
+                border-width: 2px;
+            }
+            
+            button {
+                font-size: 1rem;
+                padding: 8px 15px;
+                margin: 2px;
+                border-width: 2px;
+            }
+            
+            #kickBtn {
+                font-size: 1.2rem;
+                padding: 10px 30px;
+                margin: 5px auto;
+                display: block;
+                width: 80%;
+                max-width: 300px;
+            }
+            
+            #score {
+                font-size: 1rem;
+                margin: 5px 0;
+            }
+        }
+        
+        canvas {
+            border: 5px solid #FFD700;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 30px rgba(255,215,0,0.6),
+                0 0 60px rgba(0,217,255,0.4);
+            display: block;
+            margin: 0 auto 20px;
+        }
+        
+        #controls {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #controls button {
+            padding: 12px 20px;
+            font-size: 2rem;
+            min-width: 60px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 3px solid #FFD700;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-family: 'Lilita One', Arial;
+            color: white;
+            cursor: pointer;
+            margin: 5px;
+            text-shadow: -2px -2px 0 #000, 2px 2px 0 #000;
+            box-shadow: 
+                0 8px 20px rgba(102,126,234,0.6),
+                0 0 30px rgba(255,215,0,0.4);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        
+        button:hover::before {
+            transform: translateX(100%);
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 12px 30px rgba(102,126,234,0.8),
+                0 0 50px rgba(255,215,0,0.6);
+        }
+        
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .selected {
+            background: linear-gradient(135deg, #FF00D6 0%, #FFD700 100%);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        #kickBtn {
+            font-size: 2rem;
+            padding: 20px 60px;
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FDC830 100%);
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 8px 20px rgba(255,107,53,0.6), 0 0 40px rgba(253,200,48,0.4); }
+            50% { box-shadow: 0 8px 30px rgba(255,107,53,0.9), 0 0 60px rgba(253,200,48,0.7); }
+        }
+        
+        #score {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: #FFD700;
+            text-shadow: 
+                -3px -3px 0 #000, 3px 3px 0 #000,
+                0 0 20px rgba(255,215,0,0.8);
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <h1>המשחק של טום</h1>
+        
+        <canvas id="gameCanvas" width="600" height="800"></canvas>
+        
+        <div id="controls">
+            <button id="leftBtn">⬅️</button>
+            <button id="centerBtn">⬆️</button>
+            <button id="rightBtn">➡️</button>
+        </div>
+        
+        <button id="kickBtn">⚡ בעט! ⚡</button>
+        
+        <div id="score">⚽ גולים: 0 | ❌ החטאות: 0</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // התאמה למובייל
+        function resizeCanvas() {
+            if (window.innerWidth <= 768) {
+                const width = Math.min(window.innerWidth * 0.95, 400);
+                canvas.width = width;
+                canvas.height = Math.min(window.innerHeight * 0.45, width * 1.1);
+            } else {
+                canvas.width = 600;
+                canvas.height = 800;
+            }
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        let direction = 'center';
+        let goals = 0;
+        let misses = 0;
+        let isKicking = false;
+        let ball = { x: canvas.width/2, y: canvas.height - 100, radius: 20 };
+        let goalkeeper = { x: canvas.width/2, y: 120, width: 50, height: 70, speed: 2, dir: 1 };
+        let particles = [];
+        
+        // כפתורי כיוון
+        document.getElementById('leftBtn').onclick = () => { direction = 'left'; updateButtons(); };
+        document.getElementById('centerBtn').onclick = () => { direction = 'center'; updateButtons(); };
+        document.getElementById('rightBtn').onclick = () => { direction = 'right'; updateButtons(); };
+        
+        function updateButtons() {
+            document.querySelectorAll('#controls button').forEach(btn => btn.classList.remove('selected'));
+            if (direction === 'left') document.getElementById('leftBtn').classList.add('selected');
+            if (direction === 'center') document.getElementById('centerBtn').classList.add('selected');
+            if (direction === 'right') document.getElementById('rightBtn').classList.add('selected');
+        }
+        
+        // בעיטה
+        document.getElementById('kickBtn').onclick = () => {
+            if (!isKicking) kick();
+        };
+        
+        function kick() {
+            isKicking = true;
+            let targetX = canvas.width / 2;
+            // תיקון: החלפת כיוונים - שמאל ← הוא 0.37, ימין → הוא 0.63
+            if (direction === 'left') targetX = canvas.width * 0.63;
+            if (direction === 'right') targetX = canvas.width * 0.37;
+            
+            const interval = setInterval(() => {
+                ball.y -= 12;
+                ball.x += (targetX - ball.x) * 0.08;
+                
+                if (ball.y <= 140) {
+                    clearInterval(interval);
+                    checkGoal();
+                    setTimeout(reset, 2000);
+                }
+            }, 30);
+        }
+        
+        function checkGoal() {
+            const goalLeft = canvas.width * 0.2;
+            const goalRight = canvas.width * 0.8;
+            const hitGoalkeeper = Math.abs(ball.x - goalkeeper.x) < 45;
+            
+            if (ball.x >= goalLeft && ball.x <= goalRight && !hitGoalkeeper) {
+                goals++;
+                createGoalEffect();
+            } else {
+                misses++;
+                createMissEffect();
+            }
+            updateScore();
+        }
+        
+        // סאונד גול - Web Audio API
+        function playGoalSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // גל 1 - בס חזק
+                const bass = audioContext.createOscillator();
+                const bassGain = audioContext.createGain();
+                bass.type = 'sine';
+                bass.frequency.setValueAtTime(120, audioContext.currentTime);
+                bass.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 0.3);
+                bassGain.gain.setValueAtTime(0.4, audioContext.currentTime);
+                bassGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                bass.connect(bassGain).connect(audioContext.destination);
+                bass.start(audioContext.currentTime);
+                bass.stop(audioContext.currentTime + 0.3);
+                
+                // גל 2 - פעמונים
+                [0, 0.15, 0.3].forEach(delay => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, audioContext.currentTime + delay);
+                    osc.frequency.exponentialRampToValueAtTime(1200, audioContext.currentTime + delay + 0.1);
+                    gain.gain.setValueAtTime(0.3, audioContext.currentTime + delay);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + delay + 0.2);
+                    osc.connect(gain).connect(audioContext.destination);
+                    osc.start(audioContext.currentTime + delay);
+                    osc.stop(audioContext.currentTime + delay + 0.2);
+                });
+                
+                // רעש לקהל
+                const bufferSize = audioContext.sampleRate * 0.5;
+                const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+                const whiteNoise = audioContext.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+                const noiseGain = audioContext.createGain();
+                noiseGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                noiseGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                whiteNoise.connect(noiseGain).connect(audioContext.destination);
+                whiteNoise.start(audioContext.currentTime);
+            } catch (e) {
+                console.log('אודיו לא נתמך');
+            }
+        }
+        
+        let goalTextVisible = false;
+        
+        function createGoalEffect() {
+            // פרטיקלים - יותר ומרהיבים!
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: ball.x,
+                    y: ball.y,
+                    vx: (Math.random() - 0.5) * 15,
+                    vy: (Math.random() - 0.5) * 15 - 5,
+                    life: 100,
+                    size: Math.random() * 8 + 3,
+                    color: `hsl(${Math.random() * 360}, 100%, 60%)`
+                });
+            }
+            
+            // נגן סאונד!
+            playGoalSound();
+            
+            // הצג טקסט "גול!" למשך 2 שניות
+            goalTextVisible = true;
+            setTimeout(() => {
+                goalTextVisible = false;
+            }, 2000);
+        }
+        
+        function createMissEffect() {
+            ctx.save();
+            const fontSize = Math.min(60, canvas.width / 7);
+            ctx.font = `bold ${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#FF4444';
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 6;
+            ctx.strokeText('❌ אוי לא! ❌', canvas.width / 2, canvas.height / 2);
+            ctx.fillText('❌ אוי לא! ❌', canvas.width / 2, canvas.height / 2);
+            ctx.restore();
+        }
+        
+        function reset() {
+            isKicking = false;
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height - 100;
+        }
+        
+        function updateScore() {
+            document.getElementById('score').textContent = `⚽ גולים: ${goals} | ❌ החטאות: ${misses}`;
+        }
+        
+        // טעינת תמונת טום
+        const tomImg = new Image();
+        tomImg.src = 'tom-photo.jpg';
+        
+        function draw() {
+            // רקע מגרש
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(1, '#2ecc71');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // שער - גדול יותר!
+            const goalLeft = canvas.width * 0.2;
+            const goalRight = canvas.width * 0.8;
+            const goalTop = 40;
+            const goalBottom = canvas.height * 0.3;
+            
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 10;
+            ctx.shadowColor = 'rgba(255,215,0,0.8)';
+            ctx.shadowBlur = 20;
+            ctx.beginPath();
+            ctx.moveTo(goalLeft, goalTop);
+            ctx.lineTo(goalLeft, goalBottom);
+            ctx.lineTo(goalRight, goalBottom);
+            ctx.lineTo(goalRight, goalTop);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // רשת
+            ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+            ctx.lineWidth = 2;
+            const netLines = 8;
+            for (let i = 0; i < netLines; i++) {
+                ctx.beginPath();
+                ctx.moveTo(goalLeft + i * (goalRight - goalLeft) / netLines, goalTop);
+                ctx.lineTo(goalLeft + i * (goalRight - goalLeft) / netLines, goalBottom);
+                ctx.stroke();
+            }
+            
+            // שוער עם תמונת טום
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(goalkeeper.x, goalkeeper.y + 15, 30, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.drawImage(tomImg, goalkeeper.x - 30, goalkeeper.y - 15, 60, 60);
+            ctx.restore();
+            // גוף השוער
+            ctx.fillStyle = '#FF8C00';
+            ctx.fillRect(goalkeeper.x - 20, goalkeeper.y + 35, 40, 30);
+            // כפפות
+            ctx.fillStyle = '#32CD32';
+            ctx.beginPath();
+            ctx.arc(goalkeeper.x - 25, goalkeeper.y + 45, 8, 0, Math.PI * 2);
+            ctx.arc(goalkeeper.x + 25, goalkeeper.y + 45, 8, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // כדור
+            ctx.fillStyle = '#fff';
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // פרטיקלים
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.3;
+                p.life--;
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.life / 100;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size || 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+            
+            // טקסט "גול!" - Fortnite style!
+            if (goalTextVisible) {
+                ctx.save();
+                const fontSize = Math.min(100, canvas.width / 4);
+                ctx.font = `bold ${fontSize}px Lilita One, Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                // אפקט זוהר מרובה שכבות
+                for (let i = 5; i > 0; i--) {
+                    ctx.shadowColor = `rgba(255, 215, 0, ${i * 0.15})`;
+                    ctx.shadowBlur = 30 * i;
+                    ctx.strokeStyle = `rgba(255, ${100 + i * 30}, 0, ${1 - i * 0.1})`;
+                    ctx.lineWidth = 15 - i * 2;
+                    ctx.strokeText('🎉 גול! 🎉', canvas.width / 2, canvas.height / 2);
+                }
+                
+                ctx.shadowBlur = 0;
+                
+                // מילוי מדרג
+                const gradient = ctx.createLinearGradient(0, canvas.height/2 - fontSize/2, 0, canvas.height/2 + fontSize/2);
+                gradient.addColorStop(0, '#FFD700');
+                gradient.addColorStop(0.5, '#FFA500');
+                gradient.addColorStop(1, '#FF4500');
+                ctx.fillStyle = gradient;
+                ctx.fillText('🎉 גול! 🎉', canvas.width / 2, canvas.height / 2);
+                
+                // אפקט הבהוב
+                const time = Date.now() / 100;
+                ctx.globalAlpha = 0.5 + Math.sin(time) * 0.3;
+                ctx.fillStyle = 'white';
+                ctx.fillText('🎉 גול! 🎉', canvas.width / 2, canvas.height / 2);
+                ctx.globalAlpha = 1;
+                
+                ctx.restore();
+            }
+            
+            // טום
+            if (!isKicking) {
+                ctx.font = '50px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('⚽', canvas.width / 2, canvas.height - 40);
+            }
+            
+            // תנועת שוער
+            if (!isKicking) {
+                goalkeeper.x += goalkeeper.speed * goalkeeper.dir;
+                const goalLeft = canvas.width * 0.2;
+                const goalRight = canvas.width * 0.8;
+                if (goalkeeper.x < goalLeft + 50 || goalkeeper.x > goalRight - 50) goalkeeper.dir *= -1;
+            }
+            
+            requestAnimationFrame(draw);
+        }
+        
+        updateButtons();
+        draw();
+    </script>
+</body>
+</html>
