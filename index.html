@@ -76,38 +76,33 @@
         /* Score Board */
         .score-board {
             position: absolute;
-            top: 90px;
+            top: 80px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 15px;
-            padding: 15px 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             display: flex;
-            gap: 10px;
+            gap: 15px;
             z-index: 100;
         }
 
-        .ball-indicator {
-            width: 30px;
-            height: 30px;
+        .score-ball {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: #666;
-            border: 2px solid #fff;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
         }
 
-        .ball-indicator.goal {
-            background: #ffd700;
-            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffd700;
+        .score-ball.goal {
+            background: #4CAF50;
+            box-shadow: 0 0 20px rgba(76,175,80,0.8);
             animation: goalPulse 0.5s ease;
         }
 
-        .ball-indicator.miss {
+        .score-ball.miss {
             background: #e74c3c;
-            box-shadow: 0 0 20px #e74c3c;
+            box-shadow: 0 0 15px rgba(231,76,60,0.6);
         }
 
         @keyframes goalPulse {
@@ -617,11 +612,11 @@
     </div>
 
     <div class="score-board" id="scoreBoard">
-        <div class="ball-indicator"></div>
-        <div class="ball-indicator"></div>
-        <div class="ball-indicator"></div>
-        <div class="ball-indicator"></div>
-        <div class="ball-indicator"></div>
+        <div class="score-ball" data-index="0"></div>
+        <div class="score-ball" data-index="1"></div>
+        <div class="score-ball" data-index="2"></div>
+        <div class="score-ball" data-index="3"></div>
+        <div class="score-ball" data-index="4"></div>
     </div>
 
     <div class="game-container">
@@ -793,7 +788,7 @@
         function updateScore(isGoal) {
             if (isGoal) score++;
             
-            const indicators = scoreBoard.querySelectorAll('.ball-indicator');
+            const indicators = scoreBoard.querySelectorAll('.score-ball');
             indicators[currentKick].classList.add(isGoal ? 'goal' : 'miss');
         }
 
@@ -858,7 +853,7 @@
             
             // Reset UI
             gameOverScreen.classList.remove('show');
-            const indicators = scoreBoard.querySelectorAll('.ball-indicator');
+            const indicators = scoreBoard.querySelectorAll('.score-ball');
             indicators.forEach(ind => {
                 ind.classList.remove('goal', 'miss');
             });
